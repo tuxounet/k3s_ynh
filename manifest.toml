@@ -97,8 +97,8 @@ ram.runtime = "50M"
     # This will pre-fetch the asset which can then be deployed during the install/upgrade scripts with :
     #    ynh_setup_source --dest_dir="$install_dir"
     # You can also define other assets than "main" and add --source_id="foobar" in the previous command
-    url = "https://github.com/k3s-io/k3s/blob/release-1.31/install.sh"
-    sha256 = "f46157d1b784e391a8ab4b45b311cfc8e80d4bd3b7d4e4fdb809e2e137f67382"
+    url = "https://raw.githubusercontent.com/k3s-io/k3s/refs/heads/release-1.31/install.sh"
+    sha256 = "f60c3d8940dfc896f7d83aaf57726c91cf21afc4bca40036472df108d9700b4b"
 
     # These infos are used by https://github.com/YunoHost/apps/blob/master/tools/autoupdate_app_sources/autoupdate_app_sources.py
     # to auto-update the previous asset urls and sha256sum + manifest version
