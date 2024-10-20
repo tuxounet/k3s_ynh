@@ -63,6 +63,16 @@ chmod +x "$install_dir/main"
 #=================================================
 ynh_script_progression "Adding $app's configuration files..."
 
+
+# Enable IP forwarding
+if ! grep -q "^net.ipv4.ip_forward=1" /etc/sysctl.conf; then
+    echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+fi
+
+# Apply the changes
+sysctl -p /etc/sysctl.conf
+
+
 ### You can add specific configuration files.
 ###
 ### Typically, put your template conf file in ../conf/your_config_file
