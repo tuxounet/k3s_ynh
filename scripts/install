@@ -72,7 +72,8 @@ fi
 # Apply the changes
 sysctl -p /etc/sysctl.conf
 
-sudo usermod --add-subuids 10000-65536 k3s
+sudo usermod --add-subuids 11000-65536 k3s
+sudo usermod --add-subgid  11000-65536 k3s
 
 ### You can add specific configuration files.
 ###
