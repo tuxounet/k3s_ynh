@@ -98,7 +98,7 @@ ram.runtime = "50M"
     #    ynh_setup_source --dest_dir="$install_dir"
     # You can also define other assets than "main" and add --source_id="foobar" in the previous command
     url = "https://github.com/k3s-io/k3s/blob/release-1.31/install.sh"
-    sha256 = "a01dd26425126ee2594baf6bdb4a3778aca920e1f5ae29a1b8970996c7d0acf9"
+    sha256 = "f46157d1b784e391a8ab4b45b311cfc8e80d4bd3b7d4e4fdb809e2e137f67382"
 
     # These infos are used by https://github.com/YunoHost/apps/blob/master/tools/autoupdate_app_sources/autoupdate_app_sources.py
     # to auto-update the previous asset urls and sha256sum + manifest version
