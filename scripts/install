@@ -88,6 +88,8 @@ sysctl -p /etc/sysctl.conf
 ###
 ### Check the documentation of `ynh_config_add` for more info.
 
+ynh_config_add --template="k3s_config.yaml" --destination="/etc/rancher/k3s/config.yaml"
+
 ynh_config_add --template="start.sh" --destination="$install_dir/start.sh"
 chown "$app:$app" "$install_dir/start.sh"
 chmod +x "$install_dir/start.sh"
