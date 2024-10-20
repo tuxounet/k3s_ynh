@@ -93,14 +93,14 @@ ram.runtime = "2G"
 
     [resources.sources]
 
-    [resources.sources.k3s.amd64]
+    [resources.sources.main.amd64]
     # This will pre-fetch the asset which can then be deployed during the install/upgrade scripts with :
     #    ynh_setup_source --dest_dir="$install_dir"
     # You can also define other assets than "main" and add --source_id="foobar" in the previous command
     url = "https://github.com/k3s-io/k3s/releases/download/v1.31.1%2Bk3s1/k3s"
     sha256 = "404141c08a6b194246784191f1fc7200dc7a56f4b44aff069e00ff2786803d96"
 
-    [resources.sources.k3s-image.amd64]
+    [resources.sources.images.amd64]
     # This will pre-fetch the asset which can then be deployed during the install/upgrade scripts with :
     #    ynh_setup_source --dest_dir="$install_dir"
     # You can also define other assets than "main" and add --source_id="foobar" in the previous command
