@@ -86,7 +86,7 @@ sysctl -p /etc/sysctl.conf
 ynh_script_progression "Installing $app $k3s_version..."
 mkdir -p /etc/rancher/k3s
 ynh_config_add --template="k3s_config.yaml" --destination="/etc/rancher/k3s/config.yaml"
-K3S_CONFIG_FILE="/etc/rancher/k3s/config.yaml" INSTALL_K3S_VERSION=$k3s_version sh $install_dir/main
+INSTALL_K3S_VERSION=$k3s_version sh $install_dir/main
 
 
 ### For more complex cases where you want to replace stuff using regexes,
