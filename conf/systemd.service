@@ -3,6 +3,7 @@ Description=Rancher k3s service
 After=network.target
 
 [Service]
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 Type=simple
 User=__APP__
 Group=__APP__
