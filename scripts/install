@@ -6,7 +6,8 @@
 
 source _common.sh
 source /usr/share/yunohost/helpers
-ynh_script_progression "INSTALL: $id"
+
+ynh_script_progression "INSTALL: $version"
 
 ### Install parameters are automatically saved as settings
 ###
@@ -47,7 +48,7 @@ ynh_script_progression "Setting up source files..."
 
 # Download, check integrity, uncompress and patch the source from manifest.toml
 ynh_setup_source --dest_dir="$install_dir"
-
+ynh_setup_source --dest_dir="$install_dir" --source_id="images"
 
 
 ### $install_dir will automatically be initialized with some decent
