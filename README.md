@@ -27,20 +27,18 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 ## Overview
 
-Some long and extensive description of what the app is and does, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+> this is my first yunohost package and this is at early stages of developement, DON'T use in production (...yet ?)
+
+Base Package for lightweight kubernetes on yunohost
+
 
 ### Features
 
-- Ut enim ad minim veniam, quis nostrud exercitation ullamco ;
-- Laboris nisi ut aliquip ex ea commodo consequat ;
-- Duis aute irure dolor in reprehenderit in voluptate ;
-- Velit esse cillum dolore eu fugiat nulla pariatur ;
-- Excepteur sint occaecat cupidatat non proident, sunt in culpa."
-
+- Install / Remove k3s kubernetes control plane 
+ 
 
 **Shipped version:** 1.0~ynh1
 
-**Demo:** https://demo.example.com
 
 ## Screenshots
 
