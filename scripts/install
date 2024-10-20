@@ -85,14 +85,8 @@ sysctl -p /etc/sysctl.conf
 ### Check the documentation of `ynh_config_add` for more info.
 ynh_script_progression "Installing $app $k3s_version..."
 
-
-
 ynh_config_add --template="k3s_config.yaml" --destination="/etc/rancher/k3s/config.yaml"
-
-
-
-INSTALL_K3S_VERSION=$k3s_version
-sh $install_dir/main
+K3S_CONFIG_FILE="/etc/rancher/k3s/config.yaml" INSTALL_K3S_VERSION=$k3s_version sh $install_dir/main
 
 
 ### For more complex cases where you want to replace stuff using regexes,
@@ -136,7 +130,7 @@ ynh_script_progression "Adding system configurations related to $app..."
 ###   - And the section "SETUP SYSTEMD" in the upgrade script
 
 # Create a dedicated systemd config
-ynh_config_add_systemd
+# ynh_config_add_systemd
 
 ### `yunohost service add` integrates a service in YunoHost. It then gets
 ### displayed in the admin interface and through the others `yunohost service` commands.
