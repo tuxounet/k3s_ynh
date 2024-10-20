@@ -85,13 +85,14 @@ sysctl -p /etc/sysctl.conf
 ### Check the documentation of `ynh_config_add` for more info.
 ynh_script_progression "Installing $app $k3s_version..."
 chmod +x $install_dir/main
- 
+
 export K3S_DATA_DIR=$data_dir
 export K3S_KUBECONFIG_MODE="644"
 export INSTALL_K3S_VERSION=$k3s_version 
 export INSTALL_K3S_EXEC="--disable=traefik"
 $install_dir/main
 
+chown "$app:ops" "$data_dir" /etc/rancher/k3s/k3s.yaml
 ### For more complex cases where you want to replace stuff using regexes,
 ### you shoud rely on ynh_replace (which is basically a wrapper for sed)
 ### When doing so, you also need to manually call ynh_store_file_checksum
