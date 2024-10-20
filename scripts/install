@@ -85,7 +85,7 @@ sysctl -p /etc/sysctl.conf
 ### Check the documentation of `ynh_config_add` for more info.
 ynh_script_progression "Installing $app $k3s_version..."
  
-K3S_DATA_DIR=$data_dir INSTALL_K3S_VERSION=$k3s_version INSTALL_K3S_EXEC="--disable=traefik"
+K3S_DATA_DIR=$data_dir INSTALL_K3S_VERSION=$k3s_version  
 sh $install_dir/main
 
 
