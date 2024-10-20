@@ -50,13 +50,13 @@ ynh_script_progression "Setting up source files..."
 
 # Download, check integrity, uncompress and patch the source from manifest.toml
 ynh_setup_source --dest_dir="$install_dir"  
-ynh_setup_source --dest_dir="$install_dir" --source_id="images"
+# ynh_setup_source --dest_dir="$install_dir" --source_id="images"
 
 ### $install_dir will automatically be initialized with some decent
 ### permission by default... however, you may need to recursively reapply
 ### ownership to all files such as after the ynh_setup_source step
 chown -R "$app:www-data" "$install_dir"
-chmod +x "$install_dir/main"
+
 
 #=================================================
 # APP INITIAL CONFIGURATION
@@ -72,10 +72,6 @@ fi
 # Apply the changes
 sysctl -p /etc/sysctl.conf
 
-# # rootless needs
-# usermod --add-subuids 10000-999999 k3s
-# usermod --add-subgid  10000-999999 k3s
-
 ### You can add specific configuration files.
 ###
 ### Typically, put your template conf file in ../conf/your_config_file
@@ -87,12 +83,17 @@ sysctl -p /etc/sysctl.conf
 ### if it's found that the file was manually modified
 ###
 ### Check the documentation of `ynh_config_add` for more info.
+ynh_script_progression "Installing $app $k3s_version..."
+
+
 
 ynh_config_add --template="k3s_config.yaml" --destination="/etc/rancher/k3s/config.yaml"
 
-ynh_config_add --template="start.sh" --destination="$install_dir/start.sh"
-chown "$app:$app" "$install_dir/start.sh"
-chmod +x "$install_dir/start.sh"
+
+
+INSTALL_K3S_VERSION=$k3s_version
+sh $install_dir/main
+
 
 ### For more complex cases where you want to replace stuff using regexes,
 ### you shoud rely on ynh_replace (which is basically a wrapper for sed)
