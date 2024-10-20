@@ -9,6 +9,7 @@ source /usr/share/yunohost/helpers
 
 ynh_script_progression "Uninstall $app"
 
+export K3S_DATA_DIR=$data_dir
 /usr/local/bin/k3s-uninstall.sh
 
 ### Settings are automatically loaded as bash variables
