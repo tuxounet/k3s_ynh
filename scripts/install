@@ -6,8 +6,10 @@
 
 source _common.sh
 source /usr/share/yunohost/helpers
+k3s_version="v1.31.1+k3s1"
 
-ynh_script_progression "INSTALL: $version"
+
+ynh_script_progression "INSTALL: k3s ( $k3s_version ) "
 
 ### Install parameters are automatically saved as settings
 ###
