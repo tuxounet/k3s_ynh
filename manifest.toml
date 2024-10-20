@@ -63,11 +63,11 @@ ram.runtime = "50M"
     #type = "path"
     #default = "/example"
 
-    [install.init_main_permission]
-    # this is a generic question - ask strings are automatically handled by YunoHost's core
-    # This won't be saved as setting and will instead be used to initialize the SSOwat permission
-    type = "group"
-    default = "admins"
+    # [install.init_main_permission]
+    # # this is a generic question - ask strings are automatically handled by YunoHost's core
+    # # This won't be saved as setting and will instead be used to initialize the SSOwat permission
+    # type = "group"
+    # default = "admins"
 
     #[install.language]
     #ask.en = "Choose the application language"
@@ -76,9 +76,9 @@ ram.runtime = "50M"
     #choices = ["fr", "en"]
     #default = "fr"
 
-    [install.admin]
-    # this is a generic question - ask strings are automatically handled by YunoHost's core
-    type = "user"
+    # [install.admin]
+    # # this is a generic question - ask strings are automatically handled by YunoHost's core
+    # type = "user"
 
     #[install.password]
     ## this is a generic question - ask strings are automatically handled by YunoHost's core

@@ -6,7 +6,7 @@
 
 source _common.sh
 source /usr/share/yunohost/helpers
-
+ynh_script_progression "INSTALL: Say hello"
 ### Install parameters are automatically saved as settings
 ###
 ### Settings are automatically loaded as bash variables
@@ -101,7 +101,7 @@ ynh_script_progression "Adding system configurations related to $app..."
 ###   - And the section "PHP-FPM CONFIGURATION" in the upgrade script
 
 # Create a PHP-FPM config (with conf/extra_php-fpm.conf being appended to it)
-ynh_config_add_phpfpm
+# ynh_config_add_phpfpm
 
 # Create a dedicated NGINX config using the conf/nginx.conf template
 ynh_config_add_nginx
