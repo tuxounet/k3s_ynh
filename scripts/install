@@ -72,9 +72,9 @@ fi
 # Apply the changes
 sysctl -p /etc/sysctl.conf
 
-# rootless needs
-usermod --add-subuids 10000-999999 k3s
-usermod --add-subgid  10000-999999 k3s
+# # rootless needs
+# usermod --add-subuids 10000-999999 k3s
+# usermod --add-subgid  10000-999999 k3s
 
 ### You can add specific configuration files.
 ###

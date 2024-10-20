@@ -5,8 +5,6 @@ After=network.target
 [Service]
 Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 Type=simple
-User=__APP__
-Group=__APP__
 WorkingDirectory=__INSTALL_DIR__/
 ExecStart=__INSTALL_DIR__/start.sh
 StandardOutput=append:/var/log/__APP__/__APP__.log
