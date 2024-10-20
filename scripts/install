@@ -84,8 +84,7 @@ sysctl -p /etc/sysctl.conf
 ###
 ### Check the documentation of `ynh_config_add` for more info.
 ynh_script_progression "Installing $app $k3s_version..."
-mkdir -p /etc/rancher/k3s
-ynh_config_add --template="k3s_config.yaml" --destination="/etc/rancher/k3s/config.yaml"
+ 
 INSTALL_K3S_VERSION=$k3s_version sh $install_dir/main
 
 
