@@ -38,7 +38,8 @@ Base Package for lightweight kubernetes on yunohost
 - OIDC Configuration via DEX ynh package
   inpired by : 
   => https://github.com/YunoHost-Apps/headscale_ynh/blob/master/scripts/install
-  
+- Use Headlamp as kubernetes dashboard
+
 
  
 
