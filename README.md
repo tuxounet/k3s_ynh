@@ -35,6 +35,12 @@ Base Package for lightweight kubernetes on yunohost
 ### Features
 
 - Install / Remove k3s kubernetes control plane 
+- OIDC Configuration via DEX ynh package
+  inpired by : 
+  => https://github.com/YunoHost-Apps/headscale_ynh/blob/master/scripts/install
+- Use Headlamp as kubernetes dashboard
+
+
  
 
 **Shipped version:** 1.0~ynh1
