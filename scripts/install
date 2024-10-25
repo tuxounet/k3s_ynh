@@ -9,7 +9,15 @@ source /usr/share/yunohost/helpers
 
 k3s_version="v1.31.1+k3s1"
 
+iam_domain=$YNH_APP_ARG_DOMAIN
+iam_path=$YNH_APP_ARG_PATH
+iam_oidc_name="$app-oidc"
+iam_oidc_secret="$(echo $(ynh_string_random --length=32 --filter='A-F0-9'))"
+oidc_base_url="$iam_domain/iam"
+oidc_secret
 
+
+yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "domain=$domain&path=/iam&oidc_name=$oidc_name&oidc_secret=$oidc_secret&oidc_callback=$oidc_callback"
 
 
 
@@ -23,8 +31,7 @@ k3s_version="v1.31.1+k3s1"
 
 
 
-# oidc_secret="$(echo $(ynh_string_random --length=32 --filter='A-F0-9'))"
-# oidc_name="$app"
+
 # oidc_callback="$domain/oidc/callback"
 
 # echo $yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "domain=$domain&path=/iam&oidc_name=$oidc_name&oidc_secret=$oidc_secret&oidc_callback=$oidc_callback"
