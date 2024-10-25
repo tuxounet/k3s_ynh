@@ -13,143 +13,143 @@ k3s_version="v1.31.1+k3s1"
 
 
 
-#=================================================
-# INSTALL DEX FOR OIDC
-#=================================================
-ynh_script_progression --message="Installing Dex as k3s OIDC..." --weight=1
+# #=================================================
+# # INSTALL DEX FOR OIDC
+# #=================================================
+# ynh_script_progression --message="Installing Dex as k3s OIDC..." --weight=1
 
-oidc_base_url="$domain/iam"
-ynh_app_setting_set --key=oidc_base_url --value=$oidc_base_url
+# oidc_base_url="$domain/iam"
+# ynh_app_setting_set --key=oidc_base_url --value=$oidc_base_url
 
 
 
-oidc_secret="$(echo $(ynh_string_random --length=32 --filter='A-F0-9'))"
-oidc_name="$app"
-oidc_callback="$domain/oidc/callback"
+# oidc_secret="$(echo $(ynh_string_random --length=32 --filter='A-F0-9'))"
+# oidc_name="$app"
+# oidc_callback="$domain/oidc/callback"
 
-echo $yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "domain=$domain&path=/iam&oidc_name=$oidc_name&oidc_secret=$oidc_secret&oidc_callback=$oidc_callback"
+# echo $yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "domain=$domain&path=/iam&oidc_name=$oidc_name&oidc_secret=$oidc_secret&oidc_callback=$oidc_callback"
 
-if yunohost app list | grep -q "${YNH_APP_ARG_DOMAIN}/iam"; then
-	ynh_die "The domain and path provided for Dex is already used by another app. Please chose another one !"
-fi
+# if yunohost app list | grep -q "${YNH_APP_ARG_DOMAIN}/iam"; then
+# 	ynh_die "The domain and path provided for Dex is already used by another app. Please chose another one !"
+# fi
 
-yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "domain=$domain&path=/iam&oidc_name=$oidc_name&oidc_secret=$oidc_secret&oidc_callback=$oidc_callback" 2>&1 | tee dexlog.txt
-dex_app=$(gawk 'match($0, /Installation of (.+) completed/, app) {print app[1]}' dexlog.txt)
-rm dexlog.txt
+# yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "domain=$domain&path=/iam&oidc_name=$oidc_name&oidc_secret=$oidc_secret&oidc_callback=$oidc_callback" 2>&1 | tee dexlog.txt
+# dex_app=$(gawk 'match($0, /Installation of (.+) completed/, app) {print app[1]}' dexlog.txt)
+# rm dexlog.txt
 
-# Create Dex URIs
-oidc_auth_uri="https://$oidc_base_url/auth"
-oidc_token_uri="https://$oidc_base_url/token"
-oidc_user_uri="https://$oidc_base_url/userinfo"
+# # Create Dex URIs
+# oidc_auth_uri="https://$oidc_base_url/auth"
+# oidc_token_uri="https://$oidc_base_url/token"
+# oidc_user_uri="https://$oidc_base_url/userinfo"
  
 
-#=================================================
-# INITIALIZE AND STORE SETTINGS
-#=================================================
+# #=================================================
+# # INITIALIZE AND STORE SETTINGS
+# #=================================================
 
-# If you need to, you can define custom settings
-# (or remove this section entirely if not relevant for you)
-foo="bar"
-ynh_app_setting_set --key=foo --value=$foo
+# # If you need to, you can define custom settings
+# # (or remove this section entirely if not relevant for you)
+# foo="bar"
+# ynh_app_setting_set --key=foo --value=$foo
 
-#=================================================
-# DOWNLOAD, CHECK AND UNPACK SOURCE
-#=================================================
-ynh_script_progression "Setting up source files..."
+# #=================================================
+# # DOWNLOAD, CHECK AND UNPACK SOURCE
+# #=================================================
+# ynh_script_progression "Setting up source files..."
  
-ynh_setup_source --dest_dir="$install_dir"  
-chown -R "$app:$app" "$install_dir"
+# ynh_setup_source --dest_dir="$install_dir"  
+# chown -R "$app:$app" "$install_dir"
 
-#=================================================
-# APP INITIAL CONFIGURATION
-#=================================================
-ynh_script_progression "Setup sysctl for $app..."
+# #=================================================
+# # APP INITIAL CONFIGURATION
+# #=================================================
+# ynh_script_progression "Setup sysctl for $app..."
 
-# Enable IP forwarding
-if ! grep -q "^net.ipv4.ip_forward=1" /etc/sysctl.conf; then
-    echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
-fi
-sysctl -p /etc/sysctl.conf
+# # Enable IP forwarding
+# if ! grep -q "^net.ipv4.ip_forward=1" /etc/sysctl.conf; then
+#     echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+# fi
+# sysctl -p /etc/sysctl.conf
 
 
 
-#=================================================
-# INSTALL SCRIPT
-#=================================================
-ynh_script_progression "Installing $app $k3s_version..."
-chmod +x $install_dir/main
+# #=================================================
+# # INSTALL SCRIPT
+# #=================================================
+# ynh_script_progression "Installing $app $k3s_version..."
+# chmod +x $install_dir/main
 
-export K3S_DATA_DIR=$data_dir
-export K3S_KUBECONFIG_MODE="644"
-export INSTALL_K3S_VERSION=$k3s_version 
-export INSTALL_K3S_EXEC="--disable=traefik"
-$install_dir/main
+# export K3S_DATA_DIR=$data_dir
+# export K3S_KUBECONFIG_MODE="644"
+# export INSTALL_K3S_VERSION=$k3s_version 
+# export INSTALL_K3S_EXEC="--disable=traefik"
+# $install_dir/main
 
-chown "$app:$app" "$data_dir" /etc/rancher/k3s/k3s.yaml
+# chown "$app:$app" "$data_dir" /etc/rancher/k3s/k3s.yaml
  
-#=================================================
-# SYSTEMD SERVICE
-#=================================================
-ynh_script_progression "Register systemd services of $app..."
-yunohost service add "$app" --description="k3s server service" --log="/var/log/$app/$app.log"
+# #=================================================
+# # SYSTEMD SERVICE
+# #=================================================
+# ynh_script_progression "Register systemd services of $app..."
+# yunohost service add "$app" --description="k3s server service" --log="/var/log/$app/$app.log"
 
  
 
-# Store Dex settings
-ynh_app_setting_set --app=$app --key=oidc_secret   --value=$oidc_secret
-ynh_app_setting_set --app=$app --key=oidc_name     --value=$oidc_name
-ynh_app_setting_set --app=$app --key=oidc_callback --value=$oidc_callback
-ynh_app_setting_set --app=$app --key=dex_app       --value=$dex_app
+# # Store Dex settings
+# ynh_app_setting_set --app=$app --key=oidc_secret   --value=$oidc_secret
+# ynh_app_setting_set --app=$app --key=oidc_name     --value=$oidc_name
+# ynh_app_setting_set --app=$app --key=oidc_callback --value=$oidc_callback
+# ynh_app_setting_set --app=$app --key=dex_app       --value=$dex_app
 
 
 
 
 
-### `ynh_config_add_logrotate` is used to configure a logrotate configuration for the logs of this app.
-### Use this helper only if there is effectively a log file for this app.
-### If you're not using this helper:
-###   - Remove the section "BACKUP LOGROTATE" in the backup script
-###   - Remove also the section "REMOVE LOGROTATE CONFIGURATION" in the remove script
-###   - As well as the section "RESTORE THE LOGROTATE CONFIGURATION" in the restore script
-###   - And the section "SETUP LOGROTATE" in the upgrade script
+# ### `ynh_config_add_logrotate` is used to configure a logrotate configuration for the logs of this app.
+# ### Use this helper only if there is effectively a log file for this app.
+# ### If you're not using this helper:
+# ###   - Remove the section "BACKUP LOGROTATE" in the backup script
+# ###   - Remove also the section "REMOVE LOGROTATE CONFIGURATION" in the remove script
+# ###   - As well as the section "RESTORE THE LOGROTATE CONFIGURATION" in the restore script
+# ###   - And the section "SETUP LOGROTATE" in the upgrade script
 
-# Use logrotate to manage application logfile(s)
-ynh_config_add_logrotate
+# # Use logrotate to manage application logfile(s)
+# ynh_config_add_logrotate
 
-# Create a dedicated Fail2Ban config
-# ynh_config_add_fail2ban --logpath="/var/log/nginx/${domain}-error.log" --failregex="Regex to match into the log for a failed login"
+# # Create a dedicated Fail2Ban config
+# # ynh_config_add_fail2ban --logpath="/var/log/nginx/${domain}-error.log" --failregex="Regex to match into the log for a failed login"
 
-#=================================================
-# SETUP APPLICATION WITH CURL
-#=================================================
+# #=================================================
+# # SETUP APPLICATION WITH CURL
+# #=================================================
 
-### Use these lines only if the app installation needs to be finalized through
-### web forms. We generally don't want to ask the final user,
-### so we're going to use curl to automatically fill the fields and submit the
-### forms.
+# ### Use these lines only if the app installation needs to be finalized through
+# ### web forms. We generally don't want to ask the final user,
+# ### so we're going to use curl to automatically fill the fields and submit the
+# ### forms.
 
-# # Installation with curl
-# ynh_script_progression "Finalizing installation..."
-# ynh_local_curl "/INSTALL_PATH" "key1=value1" "key2=value2" "key3=value3"
+# # # Installation with curl
+# # ynh_script_progression "Finalizing installation..."
+# # ynh_local_curl "/INSTALL_PATH" "key1=value1" "key2=value2" "key3=value3"
 
-#=================================================
-# START SYSTEMD SERVICE
-#=================================================
-ynh_script_progression "Starting $app's systemd service..."
+# #=================================================
+# # START SYSTEMD SERVICE
+# #=================================================
+# ynh_script_progression "Starting $app's systemd service..."
 
-### `ynh_systemctl` is used to start a systemd service for an app.
-### Only needed if you have configure a systemd service
-### If you're not using these lines:
-###   - Remove the section "STOP SYSTEMD SERVICE" and "START SYSTEMD SERVICE" in the backup script
-###   - As well as the section "START SYSTEMD SERVICE" in the restore script
-###   - As well as the section"STOP SYSTEMD SERVICE" and "START SYSTEMD SERVICE" in the upgrade script
-###   - And the section "STOP SYSTEMD SERVICE" and "START SYSTEMD SERVICE" in the change_url script
+# ### `ynh_systemctl` is used to start a systemd service for an app.
+# ### Only needed if you have configure a systemd service
+# ### If you're not using these lines:
+# ###   - Remove the section "STOP SYSTEMD SERVICE" and "START SYSTEMD SERVICE" in the backup script
+# ###   - As well as the section "START SYSTEMD SERVICE" in the restore script
+# ###   - As well as the section"STOP SYSTEMD SERVICE" and "START SYSTEMD SERVICE" in the upgrade script
+# ###   - And the section "STOP SYSTEMD SERVICE" and "START SYSTEMD SERVICE" in the change_url script
 
-# Start a systemd service
-ynh_systemctl --service="$app" --action="start"
+# # Start a systemd service
+# ynh_systemctl --service="$app" --action="start"
 
-#=================================================
-# END OF SCRIPT
-#=================================================
+# #=================================================
+# # END OF SCRIPT
+# #=================================================
 
-ynh_script_progression "Installation of $app completed"
+# ynh_script_progression "Installation of $app completed"
