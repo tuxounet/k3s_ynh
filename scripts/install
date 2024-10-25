@@ -9,13 +9,6 @@ source /usr/share/yunohost/helpers
 
 k3s_version="v1.31.1+k3s1"
 
-iam_domain=$domain
-iam_path=/iam
-iam_oidc_name="$app-oidc"
-iam_oidc_secret="$(echo $(ynh_string_random --length=32 --filter='A-F0-9'))"
-iam_oidc_callback="https://$domain/oidc/callback"
-
-yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "domain=$iam_domain&path=$iam_path&oidc_name=$iam_oidc_name&oidc_secret=$iam_oidc_secret&oidc_callback=$iam_oidc_callback"
 
 
 
@@ -57,46 +50,46 @@ yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "do
 # foo="bar"
 # ynh_app_setting_set --key=foo --value=$foo
 
-# #=================================================
-# # DOWNLOAD, CHECK AND UNPACK SOURCE
-# #=================================================
-# ynh_script_progression "Setting up source files..."
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression "Setting up source files..."
  
-# ynh_setup_source --dest_dir="$install_dir"  
-# chown -R "$app:$app" "$install_dir"
+ynh_setup_source --dest_dir="$install_dir"  
+chown -R "$app:$app" "$install_dir"
 
-# #=================================================
-# # APP INITIAL CONFIGURATION
-# #=================================================
-# ynh_script_progression "Setup sysctl for $app..."
+#=================================================
+# APP INITIAL CONFIGURATION
+#=================================================
+ynh_script_progression "Setup sysctl for $app..."
 
-# # Enable IP forwarding
-# if ! grep -q "^net.ipv4.ip_forward=1" /etc/sysctl.conf; then
-#     echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
-# fi
-# sysctl -p /etc/sysctl.conf
+# Enable IP forwarding
+if ! grep -q "^net.ipv4.ip_forward=1" /etc/sysctl.conf; then
+    echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+fi
+sysctl -p /etc/sysctl.conf
 
 
 
-# #=================================================
-# # INSTALL SCRIPT
-# #=================================================
-# ynh_script_progression "Installing $app $k3s_version..."
-# chmod +x $install_dir/main
+#=================================================
+# INSTALL SCRIPT
+#=================================================
+ynh_script_progression "Installing $app $k3s_version..."
+chmod +x $install_dir/main
 
-# export K3S_DATA_DIR=$data_dir
-# export K3S_KUBECONFIG_MODE="644"
-# export INSTALL_K3S_VERSION=$k3s_version 
-# export INSTALL_K3S_EXEC="--disable=traefik"
-# $install_dir/main
+export K3S_DATA_DIR=$data_dir
+export K3S_KUBECONFIG_MODE="644"
+export INSTALL_K3S_VERSION=$k3s_version 
+export INSTALL_K3S_EXEC="--disable=traefik"
+$install_dir/main
 
-# chown "$app:$app" "$data_dir" /etc/rancher/k3s/k3s.yaml
+chown "$app:$app" "$data_dir" /etc/rancher/k3s/k3s.yaml
  
-# #=================================================
-# # SYSTEMD SERVICE
-# #=================================================
-# ynh_script_progression "Register systemd services of $app..."
-# yunohost service add "$app" --description="k3s server service" --log="/var/log/$app/$app.log"
+#=================================================
+# SYSTEMD SERVICE
+#=================================================
+ynh_script_progression "Register systemd services of $app..."
+yunohost service add "$app" --description="k3s server service" --log="/var/log/$app/$app.log"
 
  
 
