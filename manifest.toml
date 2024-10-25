@@ -53,7 +53,7 @@ ram.build = "1G"
 ram.runtime = "2G"
 
 [install]
-    [install.k8s_domain]
+    [install.domain]
     type = "domain"
  
 
