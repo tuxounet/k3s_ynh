@@ -31,6 +31,35 @@ ynh_script_progression "INSTALL: k3s ( $k3s_version ) "
 ### $app is the app id (i.e. 'example' for first install,
 ### or 'example__2', '__3'... for multi-instance installs)
 
+
+#=================================================
+# INSTALL DEX FOR OIDC
+#=================================================
+ynh_script_progression --message="Installing Dex as k3s OIDC..." --weight=1
+
+oidc_base_url="$domain/iam"
+ynh_app_setting_set --key=oidc_base_url --value=$oidc_base_url
+
+
+
+oidc_secret="$(echo $(ynh_string_random --length=32 --filter='A-F0-9'))"
+oidc_name="$app"
+oidc_callback="$domain/oidc/callback"
+
+if yunohost app list | grep -q "${YNH_APP_ARG_DOMAIN}/iam"; then
+	ynh_die "The domain and path provided for Dex is already used by another app. Please chose another one !"
+fi
+
+yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "domain=$domain&path=/iam&oidc_name=$oidc_name&oidc_secret=$oidc_secret&oidc_callback=$oidc_callback" 2>&1 | tee dexlog.txt
+dex_app=$(gawk 'match($0, /Installation of (.+) completed/, app) {print app[1]}' dexlog.txt)
+rm dexlog.txt
+
+# Create Dex URIs
+oidc_auth_uri="https://$oidc_base_url/auth"
+oidc_token_uri="https://$oidc_base_url/token"
+oidc_user_uri="https://$oidc_base_url/userinfo"
+ 
+
 #=================================================
 # INITIALIZE AND STORE SETTINGS
 #=================================================
@@ -80,40 +109,12 @@ ynh_script_progression "Register systemd services of $app..."
 yunohost service add "$app" --description="k3s server service" --log="/var/log/$app/$app.log"
 
  
-# #=================================================
-# # INSTALL DEX FOR OIDC
-# #=================================================
-# ynh_script_progression --message="Installing Dex..." --weight=1
 
-# oidc_secret="$(echo $(ynh_string_random --length=32 --filter='A-F0-9'))"
-# oidc_name="$app"
-# oidc_callback="$domain/oidc/callback"
-
-# if yunohost app list | grep -q "$YNH_APP_ARG_DEX_DOMAIN$YNH_APP_ARG_DEX_PATH"; then
-# 	ynh_die "The domain and path provided for Dex is already used by another app. Please chose another one !"
-# fi
-
-# yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "domain=$dex_domain&path=$dex_path&oidc_name=$oidc_name&oidc_secret=$oidc_secret&oidc_callback=$oidc_callback" 2>&1 | tee dexlog.txt
-# dex_app=$(gawk 'match($0, /Installation of (.+) completed/, app) {print app[1]}' dexlog.txt)
-# rm dexlog.txt
-
-# # Create Dex URIs
-# if [ $dex_path = "/" ]
-# then
-# 	dex_auth_uri="https://$dex_domain/auth"
-# 	dex_token_uri="https://$dex_domain/token"
-# 	dex_user_uri="https://$dex_domain/userinfo"
-# else
-# 	dex_auth_uri="https://$dex_domain$dex_path/auth"
-# 	dex_token_uri="https://$dex_domain$dex_path/token"
-# 	dex_user_uri="https://$dex_domain$dex_path/userinfo"
-# fi
-
-# # Store Dex settings
-# ynh_app_setting_set --app=$app --key=oidc_secret   --value=$oidc_secret
-# ynh_app_setting_set --app=$app --key=oidc_name     --value=$oidc_name
-# ynh_app_setting_set --app=$app --key=oidc_callback --value=$oidc_callback
-# ynh_app_setting_set --app=$app --key=dex_app       --value=$dex_app
+# Store Dex settings
+ynh_app_setting_set --app=$app --key=oidc_secret   --value=$oidc_secret
+ynh_app_setting_set --app=$app --key=oidc_name     --value=$oidc_name
+ynh_app_setting_set --app=$app --key=oidc_callback --value=$oidc_callback
+ynh_app_setting_set --app=$app --key=dex_app       --value=$dex_app
 
 
 

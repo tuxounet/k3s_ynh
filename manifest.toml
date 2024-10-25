@@ -55,30 +55,7 @@ ram.runtime = "2G"
 [install]
     [install.k8s_domain]
     type = "domain"
-
-    [install.iam_domain]
-    type = "domain"
-
-    [install.console_enable]
-    type = "boolean"
-    ask.en = "Enable the management console console"
-    default = true
-
-
-    [install.console_domain]    
-    type = "domain"
-    ask.en = "Choose the domain for the management console"
-
-
-    [install.apps_enable]
-    type = "boolean"
-    ask.en = "Enable the apps domain"
-    default = true
-
-    [install.apps_domain]    
-    type = "domain"
-    ask.en = "Choose the domain for the apps"
-
+ 
 
 [resources]
     # See the packaging documentation for the full set
