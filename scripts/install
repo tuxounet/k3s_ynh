@@ -46,6 +46,8 @@ oidc_secret="$(echo $(ynh_string_random --length=32 --filter='A-F0-9'))"
 oidc_name="$app"
 oidc_callback="$domain/oidc/callback"
 
+echo $yunohost app install https://github.com/YunoHost-Apps/dex_ynh --force --args "domain=$domain&path=/iam&oidc_name=$oidc_name&oidc_secret=$oidc_secret&oidc_callback=$oidc_callback"
+
 if yunohost app list | grep -q "${YNH_APP_ARG_DOMAIN}/iam"; then
 	ynh_die "The domain and path provided for Dex is already used by another app. Please chose another one !"
 fi
