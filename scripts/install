@@ -10,26 +10,7 @@ source /usr/share/yunohost/helpers
 k3s_version="v1.31.1+k3s1"
 
 
-ynh_script_progression "INSTALL: k3s ( $k3s_version ) "
 
-### Install parameters are automatically saved as settings
-###
-### Settings are automatically loaded as bash variables
-### in every app script context, therefore typically these will exist:
-### - $domain
-### - $path
-### - $language
-### ... etc
-###
-### Resources defined in the manifest are provisioned prior to this script
-### and corresponding settings are also available, such as:
-### - $install_dir
-### - $port
-### - $db_name
-### ...
-###
-### $app is the app id (i.e. 'example' for first install,
-### or 'example__2', '__3'... for multi-instance installs)
 
 
 #=================================================
@@ -89,7 +70,9 @@ if ! grep -q "^net.ipv4.ip_forward=1" /etc/sysctl.conf; then
     echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 fi
 sysctl -p /etc/sysctl.conf
- 
+
+
+
 #=================================================
 # INSTALL SCRIPT
 #=================================================
